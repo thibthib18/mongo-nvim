@@ -62,9 +62,9 @@ EOF
 " List available databases
 nnoremap <leader>dbl <cmd>lua require('mongo-nvim.telescope.pickers').database_picker()<cr>
 " List collections in database
-nnoremap <leader>dbl <cmd>lua require('mongo-nvim.telescope.pickers').collection_picker('examples')<cr>
+nnoremap <leader>dbcl <cmd>lua require('mongo-nvim.telescope.pickers').collection_picker('examples')<cr>
 " List documents in a database's collection
-nnoremap <leader>dbl <cmd>lua require('mongo-nvim.telescope.pickers').document_picker('examples', 'movies')<cr>
+nnoremap <leader>dbdl <cmd>lua require('mongo-nvim.telescope.pickers').document_picker('examples', 'movies')<cr>
 ```
 
 ## Installing lua-mongo
