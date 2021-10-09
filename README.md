@@ -100,8 +100,7 @@ sudo make install
 Note: On Ubuntu 18.04, `libzstd` and `libssl` might be missing, install them with:
 
 ```shell
-sudo apt install libzstd-dev
-sudo apt-get install libssl-dev
+sudo apt install libzstd-dev libssl-dev
 ```
 
 We're now ready to install lua-mongo:
