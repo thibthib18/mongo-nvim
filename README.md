@@ -105,5 +105,5 @@ sudo apt install libzstd-dev libssl-dev
 
 We're now ready to install lua-mongo:
 
-```luarocks install lua-mongo```
+```sudo luarocks install lua-mongo```
 
