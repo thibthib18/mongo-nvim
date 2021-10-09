@@ -2,6 +2,7 @@
 MongoDB Integration in Neovim.
 
 **Browse MongoDB from Neovim! 🔎**
+
 ![mongonvim_compressed](https://user-images.githubusercontent.com/37300147/136668005-94f82166-20d3-484e-8868-4c1446a85689.gif)
 
 ## 🤩 Features
@@ -80,7 +81,7 @@ First, make sure you have `luarocks` installed, or install via your package mana
 ### Install Mongo C driver
 Lua-mongo depends on Mongo C driver and LibBSON. The latter is part of Mongo C driver, so we only need to install the former.
 
-From package manager (not tested):
+From package manager (couldn't get this to work on Ubuntu 18.04, fall back to install from source):
 [official instructions](http://mongoc.org/libmongoc/current/installing.html#install-libmongoc-with-a-package-manager)
 
 From source:
