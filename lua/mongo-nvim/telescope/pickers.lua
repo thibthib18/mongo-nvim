@@ -70,7 +70,7 @@ function M.document_picker(db, collectionName)
     local picker_opts = {}
     picker_opts.preview_title = "Value"
     picker_opts.prompt_title = ""
-    picker_opts.results_title = "Items"
+    picker_opts.results_title = "Documents"
     pickers.new(
         picker_opts,
         {
