@@ -69,6 +69,7 @@ nnoremap <leader>dbdl <cmd>lua require('mongo-nvim.telescope.pickers').document_
 
 ## Installing lua-mongo
 First, make sure you have `luarocks` installed, or install via your package manager, e.g. for Ubuntu:
+
 ```sudo apt install luarocks```
 
 
@@ -97,5 +98,6 @@ sudo apt-get install libssl-dev
 ```
 
 We're now ready to install lua-mongo:
+
 ```luarocks install lua-mongo```
 
