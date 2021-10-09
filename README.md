@@ -51,7 +51,7 @@ require 'mongo-nvim'.setup {
   -- connection string to your mongodb
   connection_string = "mongodb://127.0.0.1:27017",
   -- key to use for previewing/picking documents
-  list_document_key = "name"
+  list_document_key = "title"
 }
 EOF
 ```
@@ -61,11 +61,15 @@ EOF
 ```vim
 " List available databases
 nnoremap <leader>dbl <cmd>lua require('mongo-nvim.telescope.pickers').database_picker()<cr>
-" List collections in database
+" List collections in database (arg: database name)
 nnoremap <leader>dbcl <cmd>lua require('mongo-nvim.telescope.pickers').collection_picker('examples')<cr>
-" List documents in a database's collection
+" List documents in a database's collection (arg: database name, collection name)
 nnoremap <leader>dbdl <cmd>lua require('mongo-nvim.telescope.pickers').document_picker('examples', 'movies')<cr>
 ```
+
+The demo GIF above was made with the database from [MongoDB Getting started page] (https://docs.mongodb.com/manual/tutorial/getting-started/).
+
+`list_document_key` is used by the `collection_picker` preview and `document_picker` to filter documents based on this key. For this movies collection, setting `list_document_key` to `"title"` thus lets you select the movie documents by their title. For your own database, simply make sure to use a string or number field (no array or table), ideally unique.
 
 ## Installing lua-mongo
 First, make sure you have `luarocks` installed, or install via your package manager, e.g. for Ubuntu:
