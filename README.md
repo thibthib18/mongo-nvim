@@ -15,7 +15,7 @@ MongoDB Integration in Neovim.
 - [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim)
 - [lua-mongo](https://github.com/neoxic/lua-mongo)
 
-Note: instructions to install `lua-mongo` [here](#-installing-lua-mongo).
+Note: instructions to install `lua-mongo` [here](#installing-lua-mongo).
 
 ## 🏠 Installation
 
@@ -78,6 +78,8 @@ Lua-mongo depends on Mongo C driver and LibBSON. The latter is part of Mongo C d
 
 From package manager (not tested):
 [official instructions](http://mongoc.org/libmongoc/current/installing.html#install-libmongoc-with-a-package-manager)
+
+From source:
 
 ```shell
 git clone https://github.com/mongodb/mongo-c-driver.git
