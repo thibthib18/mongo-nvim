@@ -22,7 +22,7 @@ function M.list_documents_by_key(dbName, collectionName, key)
     local cursor = collection:find({})
     local documents = {}
     for value in cursor:iterator() do
-        table.insert(documents, value[key])
+        table.insert(documents, tostring(value[key]))
     end
     return documents
 end
