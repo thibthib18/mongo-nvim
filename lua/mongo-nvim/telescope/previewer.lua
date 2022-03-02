@@ -12,8 +12,8 @@ function M.document_preview(dbName, collectionName)
         define_preview = function(self, entry)
             local bufnr = self.state.bufnr
             if self.state.bufname ~= entry.name or vim.api.nvim_buf_line_count(bufnr) == 1 then
-                local selector = '{ "' .. MONGO_CONFIG.list_document_key .. '": "' .. entry.name .. '"}'
-                local document = mongo.find_document(dbName, collectionName, selector)
+                local query = mongo.make_query(MONGO_CONFIG.list_document_key, entry.name)
+                local document = mongo.find_document(dbName, collectionName, query)
                 local document_lines = utils.splitlines(vim.inspect(document))
                 local winnr = vim.fn.bufwinnr(bufnr)
                 local winid = vim.fn.win_getid(winnr)
