@@ -1,3 +1,4 @@
+local actions = require "telescope.actions"
 local finders = require "telescope.finders"
 local pickers = require "telescope.pickers"
 local action_state = require "telescope.actions.state"
@@ -6,6 +7,7 @@ local action_set = require "telescope.actions.set"
 local mongo_previewers = require "mongo-nvim.telescope.previewer"
 local utils = require "mongo-nvim.telescope.utils"
 local mongo = require "mongo-nvim.mongo"
+local mongo_buffer = require "mongo-nvim.buffer"
 
 local M = {}
 
@@ -83,7 +85,11 @@ function M.document_picker(db, collectionName)
             attach_mappings = function(_, map)
                 action_set.select:replace(
                     function(prompt_bufnr, type)
-                        print("ok")
+                        actions.close(prompt_bufnr)
+                        local entry = action_state.get_selected_entry()
+                        local query = mongo.make_query(MONGO_CONFIG.list_document_key, entry.name)
+                        local bson_document = mongo.find_bson_document(db, collectionName, query)
+                        mongo_buffer.create(db, collectionName, bson_document)
                     end
                 )
                 --map("i", "<c-b>", open())

@@ -36,12 +36,40 @@ function M.make_query(key, value)
     return '{ "' .. key .. '": "' .. value .. '"}'
 end
 
+function M.find_bson_document(dbName, collectionName, query)
+    local client = mongo.Client(MONGO_CONFIG.connection_string)
+    local db = client:getDatabase(dbName)
+    local collection = db:getCollection(collectionName)
+    local document = collection:findOne(query)
+    return document
+end
+
 function M.find_document(dbName, collectionName, query)
     local client = mongo.Client(MONGO_CONFIG.connection_string)
     local db = client:getDatabase(dbName)
     local collection = db:getCollection(collectionName)
     local document = collection:findOne(query):value()
     return document
+end
+
+function M.update_document(dbName, collectionName, id, updated_document)
+    local client = mongo.Client(MONGO_CONFIG.connection_string)
+    local db = client:getDatabase(dbName)
+    local collection = db:getCollection(collectionName)
+    local query = M.make_query("_id", id)
+    updated_document["_id"] = nil
+
+    local json_data = vim.fn.json_encode(updated_document)
+    local bson_doc = mongo.BSON(json_data)
+    local update = '{ "$set" : ' .. json_data .. "}"
+
+    local success, err = collection:updateOne(query, update)
+    if not success then
+        print(string.format("Failed to update document ID: %s", id))
+        print(err)
+        return
+    end
+    print("Successfully updated document ID " .. id)
 end
 
 return M
