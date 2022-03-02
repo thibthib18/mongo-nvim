@@ -2,7 +2,7 @@ local M = {}
 
 MONGO_CONFIG = {
     connection_string = "mongodb://127.0.0.1:27017",
-    list_document_key = "name"
+    list_document_key = "_id"
 }
 
 function M.setup(config)
