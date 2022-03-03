@@ -44,14 +44,6 @@ function M.find_bson_document(dbName, collectionName, query)
     return document
 end
 
-function M.find_document(dbName, collectionName, query)
-    local client = mongo.Client(MONGO_CONFIG.connection_string)
-    local db = client:getDatabase(dbName)
-    local collection = db:getCollection(collectionName)
-    local document = collection:findOne(query):value()
-    return document
-end
-
 function M.update_document(dbName, collectionName, id, updated_document)
     local client = mongo.Client(MONGO_CONFIG.connection_string)
     local db = client:getDatabase(dbName)
