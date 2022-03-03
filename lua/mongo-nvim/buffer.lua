@@ -6,20 +6,7 @@ _G.mongo_nvim_buffers = {}
 
 function M.create(dbName, collectionName, bson_document)
     local bufnr = vim.api.nvim_create_buf(true, true)
-    -- set buffer
-    local str_data = tostring(bson_document)
-    local json_data = vim.fn.json_decode(str_data)
-    local document_lines = utils.splitlines(vim.inspect(json_data))
-    -- set options
-    vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, document_lines)
-    vim.api.nvim_set_current_buf(bufnr)
-    vim.api.nvim_buf_set_option(bufnr, "syntax", "lua")
-    vim.api.nvim_buf_set_option(bufnr, "buftype", "acwrite")
-    vim.api.nvim_buf_set_option(bufnr, "bufhidden", "wipe")
-    vim.api.nvim_buf_set_option(bufnr, "swapfile", false)
-    vim.api.nvim_buf_set_option(bufnr, "modified", false)
-    vim.cmd(string.format("file mongo_nvim://%s", tostring(bson_document:value()._id)))
-
+    M.render(bufnr, bson_document)
     local this = {
         bufnr = bufnr,
         dbName = dbName,
@@ -30,6 +17,21 @@ function M.create(dbName, collectionName, bson_document)
     mongo_nvim_buffers[this.bufnr] = this
 
     return this
+end
+
+function M.render(bufnr, bson_document)
+    local str_data = tostring(bson_document)
+    local json_data = vim.fn.json_decode(str_data)
+    local document_lines = utils.splitlines(vim.inspect(json_data))
+
+    vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, document_lines)
+    vim.api.nvim_set_current_buf(bufnr)
+    vim.api.nvim_buf_set_option(bufnr, "syntax", "lua")
+    vim.api.nvim_buf_set_option(bufnr, "buftype", "acwrite")
+    vim.api.nvim_buf_set_option(bufnr, "bufhidden", "wipe")
+    vim.api.nvim_buf_set_option(bufnr, "swapfile", false)
+    vim.api.nvim_buf_set_option(bufnr, "modified", false)
+    vim.cmd(string.format("file mongo_nvim://%s", tostring(bson_document:value()._id)))
 end
 
 function M.save()
