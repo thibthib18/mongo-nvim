@@ -67,8 +67,8 @@ function M.collection_picker(db)
     ):find()
 end
 
-function M.document_picker(db, collectionName)
-    local documents = mongo.list_documents_by_key(db, collectionName, MONGO_CONFIG.list_document_key)
+function M.document_picker(dbName, collectionName)
+    local documents = mongo.list_documents(dbName, collectionName)
     local picker_opts = {}
     picker_opts.preview_title = "Value"
     picker_opts.prompt_title = ""
@@ -77,19 +77,19 @@ function M.document_picker(db, collectionName)
         picker_opts,
         {
             finder = finders.new_table {
-                results = utils.gen_entries(documents),
-                entry_maker = utils.gen_from_name()
+                results = utils.gen_document_entries(dbName, collectionName, documents),
+                entry_maker = utils.gen_from_document()
             },
             sorter = conf.generic_sorter(picker_opts),
-            previewer = mongo_previewers.document_preview(db, collectionName),
+            previewer = mongo_previewers.document_preview(dbName, collectionName),
             attach_mappings = function(_, map)
                 action_set.select:replace(
                     function(prompt_bufnr, type)
                         actions.close(prompt_bufnr)
                         local entry = action_state.get_selected_entry()
-                        local query = mongo.make_query(MONGO_CONFIG.list_document_key, entry.name)
-                        local bson_document = mongo.find_bson_document(db, collectionName, query)
-                        mongo_buffer.create(db, collectionName, bson_document)
+                        local query = mongo.make_query("_id", entry.id)
+                        local bson_document = mongo.find_bson_document(dbName, collectionName, query)
+                        mongo_buffer.create(dbName, collectionName, bson_document)
                     end
                 )
                 --map("i", "<c-b>", open())

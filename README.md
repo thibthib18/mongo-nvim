@@ -9,6 +9,7 @@ MongoDB Integration in Neovim.
 - Browse MongoDB databases with Telescope
 - Browse a Mongo database's collections with Telescope
 - Browse a collection's documents with Telescope
+- Edit a picked document from Neovim
 
 ## 🦒 Requirements
 
@@ -41,7 +42,8 @@ require 'mongo-nvim'.setup {
   -- connection string to your mongodb
   connection_string = "mongodb://127.0.0.1:27017",
   -- key to use for previewing/picking documents
-  list_document_key = "name"
+  -- either a string or custom table of string or functions
+  list_document_key = "_id"
 }
 ```
 
@@ -52,10 +54,12 @@ require 'mongo-nvim'.setup {
   -- connection string to your mongodb
   connection_string = "mongodb://127.0.0.1:27017",
   -- key to use for previewing/picking documents
-  list_document_key = "title"
+  -- either a string or custom table of string or functions
+  list_document_key = "_id"
 }
 EOF
 ```
+Note: instructions to install `lua-mongo` [here](#installing-lua-mongo).
 
 ## ⚙️  Config
 
@@ -70,7 +74,47 @@ nnoremap <leader>dbdl <cmd>lua require('mongo-nvim.telescope.pickers').document_
 
 The demo GIF above was made with the database from [MongoDB Getting started page] (https://docs.mongodb.com/manual/tutorial/getting-started/).
 
-`list_document_key` is used by the `collection_picker` preview and `document_picker` to filter documents based on this key. For this movies collection, setting `list_document_key` to `"title"` thus lets you select the movie documents by their title. For your own database, simply make sure to use a string or number field (no array or table), ideally unique.
+### `list_document_key`
+
+`list_document_key` is used by the `collection_picker` preview and `document_picker` to filter documents based on this key. For this movies collection, setting `list_document_key` to `"title"` thus lets you select the movie documents by their title. If not set, `_id` will be used as it is present for every document.
+
+Two types of values are accepted for `list_document_key`: string or table.
+
+For a simple/homogeneous database or usage, where all documents will share a common field, setting `list_document_key` to this field's name will do.
+
+To handle a more heterogenous structure, it is preferrable to set `list_document_key` as a table of the form:
+
+```lua
+  list_document_key = {
+    database1 = {
+      collection1 = "someFieldName", -- string to be used as key
+      collection2 = function(document) -- function taking a document table, returns a string
+        return document.value1
+      end
+    }
+    database2 = {
+      ...
+    }
+  }
+```
+
+If `list_document_key[databaseName][collectionName]` is a string, the document will be represented by the value at this key.
+
+If `list_document_key[databaseName][collectionName]` is a function taking a document parameter, the document will be represented by the return value of this function.
+
+In any other case, the `_id` will be used.
+
+Example: We have a `persons` database, containing 2 collections: `students` and `employees`. For the `students`, we'd like to see their field `name`. For `employees`, we'd like to use both their `department` and `role`. To achieve this, use the following `list_document_key`:
+
+```lua
+  list_document_key = {
+    persons = {
+      students = "name",
+      employees = function(document)
+        return document.department .. " " .. document.role
+      end,
+  }
+```
 
 ## Installing lua-mongo
 First, make sure you have `luarocks` installed, or install via your package manager, e.g. for Ubuntu:
@@ -107,3 +151,7 @@ We're now ready to install lua-mongo:
 
 ```sudo luarocks install lua-mongo```
 
+## Roadmap
+
+- [ ] Delete document
+- [ ] Refresh document (if possible on update)

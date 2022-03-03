@@ -15,14 +15,14 @@ function M.list_collections(dbName)
     return collectionNames
 end
 
-function M.list_documents_by_key(dbName, collectionName, key)
+function M.list_documents(dbName, collectionName, key)
     local client = mongo.Client(MONGO_CONFIG.connection_string)
     local db = client:getDatabase(dbName)
     local collection = db:getCollection(collectionName)
     local cursor = collection:find({})
     local documents = {}
-    for value in cursor:iterator() do
-        table.insert(documents, tostring(value[key]))
+    for document in cursor:iterator() do
+        table.insert(documents, document)
     end
     return documents
 end
