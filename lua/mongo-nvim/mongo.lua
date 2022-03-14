@@ -44,6 +44,21 @@ function M.find_bson_document(dbName, collectionName, query)
     return document
 end
 
+function M.delete_document(dbName, collectionName, documentId)
+    local client = mongo.Client(MONGO_CONFIG.connection_string)
+    local db = client:getDatabase(dbName)
+    local collection = db:getCollection(collectionName)
+    local query = M.make_query("_id", documentId)
+    local success, err = collection:removeOne(query)
+    if not success then
+        print(string.format("Failed to remove document ID: %s", documentId))
+        print(err)
+        return false
+    end
+    print("Successfully deleted document ID " .. documentId)
+    return true
+end
+
 function M.update_document(dbName, collectionName, id, updated_document)
     local client = mongo.Client(MONGO_CONFIG.connection_string)
     local db = client:getDatabase(dbName)
