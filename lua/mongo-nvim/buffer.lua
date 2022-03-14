@@ -48,8 +48,10 @@ function M.save()
     end
     local updated_document = get_data()
     local buffer = mongo_nvim_buffers[bufnr]
-    mongo.update_document(buffer.dbName, buffer.collectionName, buffer.id, updated_document)
-    vim.api.nvim_buf_set_option(bufnr, "modified", false)
+    local saved = mongo.update_document(buffer.dbName, buffer.collectionName, buffer.id, updated_document)
+    if saved then
+        vim.api.nvim_buf_set_option(bufnr, "modified", false)
+    end
 end
 
 return M
