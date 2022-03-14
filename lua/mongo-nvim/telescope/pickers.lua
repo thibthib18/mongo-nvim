@@ -92,7 +92,23 @@ function M.document_picker(dbName, collectionName)
                         mongo_buffer.create(dbName, collectionName, bson_document)
                     end
                 )
-                --map("i", "<c-b>", open())
+                -- mapping to delete document
+                local function delete_selected_document(prompt_bufnr)
+                    local documentId = action_state.get_selected_entry().id
+                    print("Deleting document " .. documentId .. " ...")
+                    local success = mongo.delete_document(dbName, collectionName, documentId)
+                    if not success then
+                        return
+                    end
+                    action_state.get_current_picker(prompt_bufnr):delete_selection(
+                        function()
+                        end
+                    )
+                end
+                if MONGO_CONFIG.delete_document_mapping ~= nil then
+                    map("n", MONGO_CONFIG.delete_document_mapping, delete_selected_document)
+                    map("i", MONGO_CONFIG.delete_document_mapping, delete_selected_document)
+                end
                 return true
             end
         }
