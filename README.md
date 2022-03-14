@@ -44,6 +44,8 @@ require 'mongo-nvim'.setup {
   -- key to use for previewing/picking documents
   -- either a string or custom table of string or functions
   list_document_key = "_id"
+  -- delete selected document in document_picker
+  delete_document_mapping = nil -- "<c-d>"
 }
 ```
 
@@ -56,6 +58,8 @@ require 'mongo-nvim'.setup {
   -- key to use for previewing/picking documents
   -- either a string or custom table of string or functions
   list_document_key = "_id"
+  -- delete selected document in document_picker
+  delete_document_mapping = nil -- "<c-d>"
 }
 EOF
 ```
