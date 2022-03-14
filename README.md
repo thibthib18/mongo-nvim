@@ -157,5 +157,5 @@ We're now ready to install lua-mongo:
 
 ## Roadmap
 
-- [ ] Delete document
+- [x] Delete document
 - [ ] Refresh document (if possible on update)
