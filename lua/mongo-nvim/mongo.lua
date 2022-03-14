@@ -59,9 +59,10 @@ function M.update_document(dbName, collectionName, id, updated_document)
     if not success then
         print(string.format("Failed to update document ID: %s", id))
         print(err)
-        return
+        return false
     end
     print("Successfully updated document ID " .. id)
+    return true
 end
 
 return M
